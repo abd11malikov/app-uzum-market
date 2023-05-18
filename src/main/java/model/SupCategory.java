@@ -7,11 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class SupCategory {
     private int id;
     private String name;
-    private String phoneNumber;
-    private String password;
-    private String email;
-    private String gender;
+    private int categoryId;
 }
