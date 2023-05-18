@@ -11,9 +11,9 @@ import java.util.Date;
 @Builder
 public class Payment {
     private int id;
-    private Card cardId;
+    private int cardId;
     private double price;
     private String status;
     private Date date;
-    private Order orderId;
+    private int orderId;
 }
