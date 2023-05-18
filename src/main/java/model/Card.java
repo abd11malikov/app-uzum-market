@@ -3,6 +3,7 @@ package model;
 import enums.CardType;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -12,8 +13,10 @@ import java.util.Date;
 @Builder
 public class Card {
     private int id;
+    private String number;
     private CardType type;
-    private Date date;
-    private String phoneNumber;
+    private Timestamp date;
+    private int ownerId;
     private String password;
+    private double balance;
 }
