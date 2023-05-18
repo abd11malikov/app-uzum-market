@@ -1,6 +1,9 @@
 package model;
 
+import enums.Gender;
 import lombok.*;
+
+import javax.management.relation.Role;
 
 @Getter
 @Setter
@@ -11,7 +14,6 @@ public class User {
     private int id;
     private String name;
     private String phoneNumber;
-    private String password;
-    private String email;
-    private String gender;
+    private Role role;
+    private Gender gender;
 }

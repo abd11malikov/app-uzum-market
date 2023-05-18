@@ -12,12 +12,12 @@ import java.util.Date;
 public class Product {
     private int id;
     private String name;
-    private String phoneNumber;
-    private String password;
-    private Date createdDate;
-    private String color;
-    private String brand;
+    private double price;
+    private int subcategoryId;
     private String description;
+    private String color;
     private String size;
+    private int ownerId;
+    private int amount;
 
 }
