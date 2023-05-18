@@ -4,5 +4,6 @@ class Main{
         System.out.println("umud");
 
         System.out.println("umid nima gap tizza");
+
     }
 }
