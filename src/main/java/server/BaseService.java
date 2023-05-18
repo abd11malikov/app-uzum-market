@@ -10,6 +10,7 @@ public interface BaseService <T>{
         String url = "jdbc:postgresql://localhost:5432/uzum_market";
         String name = "postgres";
         String password = "12345678";
+
         return DriverManager.getConnection(url,name,password);
     }
     int create (T t) throws SQLException;
