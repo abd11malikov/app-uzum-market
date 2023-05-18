@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SupCategory {
+public class SubCategory {
     private int id;
     private String name;
     private int categoryId;
