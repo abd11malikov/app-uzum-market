@@ -5,5 +5,7 @@ class Main{
         System.out.println("salom bachalar12345");
         System.out.println("salom bachalar12345");
 
+
+
     }
 }
