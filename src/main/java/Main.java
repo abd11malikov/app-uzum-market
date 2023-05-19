@@ -5,6 +5,7 @@ class Main{
 
         System.out.println("umid nima gap ");
 
+
         System.out.println("Oxshadi");
     }
 }
