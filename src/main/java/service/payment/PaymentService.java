@@ -1,4 +1,7 @@
 package service.payment;
 
-public interface PaymentService {
+import model.Payment;
+import service.baseService.BaseService;
+
+public interface PaymentService extends BaseService<Payment> {
 }
