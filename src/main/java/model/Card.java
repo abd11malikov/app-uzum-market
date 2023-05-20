@@ -15,7 +15,7 @@ public class Card {
     private int id;
     private String number;
     private CardType type;
-    private Timestamp date;
+    private Date date;
     private int ownerId;
     private String password;
     private double balance;

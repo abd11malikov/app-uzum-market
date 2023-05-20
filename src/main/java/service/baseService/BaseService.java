@@ -14,7 +14,7 @@ public interface BaseService <T>{
         return DriverManager.getConnection(url,name,password);
     }
     int create (T t) throws SQLException;
-    boolean delete (int id);
-    T get(int id);
-    List<T> getALl ();
+    boolean delete (int id) throws SQLException;
+    T get(int id) throws SQLException;
+    List<T> getALl () throws SQLException;
 }

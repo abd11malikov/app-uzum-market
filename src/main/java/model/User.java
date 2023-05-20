@@ -1,9 +1,10 @@
 package model;
 
 import enums.Gender;
+import enums.Role;
 import lombok.*;
 
-import javax.management.relation.Role;
+
 
 @Getter
 @Setter
