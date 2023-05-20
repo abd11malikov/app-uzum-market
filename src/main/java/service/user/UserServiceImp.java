@@ -3,7 +3,6 @@ package service.user;
 import enums.Gender;
 import enums.Role;
 import model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
