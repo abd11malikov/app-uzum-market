@@ -1,5 +1,5 @@
 public interface Constant {
-    String ENTRANCE = "1.Sign up\t\t2.Sign in\t\t0.Exit";
+    String ENTRANCE = "1.Sign up\t\t2.Sign in\t\3.Category\t\tt0.Exit";
     String WRONG_OPTION = "Wrong option";
     String OWNER_PAGE = "1.Admin\t\t2.User\t\t3.Category\t\t0.Exit";
     String ADMIN_FRONT= "1.Admin list\t\t2.Add admin\t\t3.Delete admin\t\t0.Exit";
