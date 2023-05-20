@@ -21,6 +21,7 @@ public class SubcategoryServiceImp implements SubcategoryService{
         if (resultSet.next()){
             result = resultSet.getInt(1);
         }
+
         resultSet.close();
         preparedStatement.close();
         connection.close();
