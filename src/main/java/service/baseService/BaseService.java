@@ -16,5 +16,5 @@ public interface BaseService <T>{
     int create (T t) throws SQLException;
     boolean delete (int id) throws SQLException;
     T get(int id) throws SQLException;
-    List<T> getALl () throws SQLException;
+    List<T> getAll () throws SQLException;
 }

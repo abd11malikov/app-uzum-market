@@ -72,7 +72,7 @@ public class CardServiceImp implements CardService{
 
 
     @Override
-    public List<Card> getALl() throws SQLException {
+    public List<Card> getAll() throws SQLException {
         var connection = getConnection();
         String query = "select * from card";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

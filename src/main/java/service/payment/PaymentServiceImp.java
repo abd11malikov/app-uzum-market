@@ -64,7 +64,7 @@ public class PaymentServiceImp implements PaymentService{
     }
 
     @Override
-    public List<Payment> getALl() throws SQLException {
+    public List<Payment> getAll() throws SQLException {
         var connection = getConnection();
         String query = "select * from payment";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

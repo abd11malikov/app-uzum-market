@@ -1,7 +1,5 @@
 package service.category;
-
 import model.Category;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,7 +57,7 @@ public class CategoryServiceImp implements CategoryService{
     }
 
     @Override
-    public List<Category> getALl() throws SQLException {
+    public List<Category> getAll() throws SQLException {
         var connection = getConnection();
         String query = "select * from category";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

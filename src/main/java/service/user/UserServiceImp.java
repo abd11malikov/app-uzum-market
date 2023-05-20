@@ -68,7 +68,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<User> getALl() throws SQLException {
+    public List<User> getAll() throws SQLException {
         var connection = getConnection();
         String query = "select * from users";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

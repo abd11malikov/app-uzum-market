@@ -62,7 +62,7 @@ public class SubcategoryServiceImp implements SubcategoryService{
     }
 
     @Override
-    public List<SubCategory> getALl() throws SQLException {
+    public List<SubCategory> getAll() throws SQLException {
         var connection = getConnection();
         String query = "select * from subcategory";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

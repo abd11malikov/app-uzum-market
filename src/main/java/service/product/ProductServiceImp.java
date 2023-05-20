@@ -73,7 +73,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public List<Product> getALl() throws SQLException {
+    public List<Product> getAll() throws SQLException {
         var connection = getConnection();
         String query = "select * from product";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
