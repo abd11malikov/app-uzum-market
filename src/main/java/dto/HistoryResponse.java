@@ -16,5 +16,4 @@ public class HistoryResponse {
   private String productName;
   private int paymentId;
   private Timestamp createdDate;
-
 }
