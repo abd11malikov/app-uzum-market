@@ -3,6 +3,7 @@ package service.user;
 import dto.HistoryResponse;
 import enums.Gender;
 import enums.Role;
+import jdk.jshell.spi.SPIResolutionException;
 import model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -88,6 +89,23 @@ public class UserServiceImp implements UserService {
         preparedStatement.close();
         connection.close();
         return users;
+    }
+
+    @Override
+    public boolean addToBasket(int userId, int productId) throws SQLException {
+        var connection = getConnection();
+        String query = "select add_to_basket(?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,userId);
+        preparedStatement.setInt(2,productId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean result = false;
+        if(resultSet.next()){
+            result = resultSet.getBoolean(1);
+        }
+        preparedStatement.close();
+        connection.close();
+        return result;
     }
 
     @Override

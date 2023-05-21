@@ -90,8 +90,96 @@ class Main implements Constant{
         }
     }
 
-    private static void userPage(User currentUser) {
-        System.out.println("usersan");
+    private static void userPage(User currentUser) throws SQLException {
+     while (true){
+         System.out.println(USER_PAGE);
+         int option = scannerInt.nextInt();
+         if(option == 1){
+             categories(currentUser);
+         }else if(option == 2){
+             allCategories(currentUser);
+         }else if(option == 3){
+             basket(currentUser);
+         }else if(option == 4){
+             sozlamalar(currentUser);
+         }else if(option == 0){
+             break;
+         }else{
+             System.out.println(WRONG_OPTION);
+         }
+     }
+    }
+
+    private static void sozlamalar(User currentUser) {
+    }
+
+    private static void basket(User currentUser) {
+    }
+
+    private static void allCategories(User currentUser) {
+    }
+
+    private static void categories(User currentUser) throws SQLException {
+        List<Category> categories = categoryService.getALl();
+        for (Category category : categories) {
+            System.out.println(category.getName());
+        }
+        System.out.print("Enter category name : ");
+        String name = scannerStr.nextLine();
+        Category category = categoryService.getCategoryByName(name);
+        if(category != null){
+            List<SubCategory> subcategories = subcategoryService.getSubcategories(category.getId());
+            for (SubCategory subcategory : subcategories) {
+                System.out.println(subcategory.getName());
+            }
+            System.out.print("Enter category name : ");
+            String name2 = scannerStr.nextLine();
+            SubCategory subCategory = subcategoryService.getByName(name2);
+            if(subCategory != null) {
+                List<Product> subcategoryProducts = productService.getSubcategoryProducts(subCategory.getId());
+                int cnt = 1;
+                for (Product product : subcategoryProducts) {
+                    System.out.println(cnt++ + ". "+product.getName() + " -> " + product.getPrice() + " -> " + product.getDescription());
+                }
+                    System.out.println("Enter pruduct number : ");
+                    int number = scannerInt.nextInt();
+                    if( number >= 1 && number <= subcategoryProducts.size()) {
+                        Product product = subcategoryProducts.get(number - 1);
+                        while (true) {
+                            System.out.println(" Enter option number ->  1.Buy   2.Add to Basket   0.Cancel");
+                            int option = scannerInt.nextInt();
+                            if (option == 1) {
+                                buyPruduct();
+                            } else if (option == 2) {
+                                boolean result = productService.checkProduct(product.getId(), currentUser.getId());
+                                if(result){
+                                    System.out.println(ADDED_TO_BASKET);
+                                }else{
+                                    boolean result2 = userService.addToBasket(currentUser.getId(), product.getId());
+                                    if (result2){
+                                        System.out.println(ADDED_TO_BASKET);
+                                    }else{
+                                        System.out.println(PROCESS_FAILED);
+                                    }
+                                }
+
+                            } else if (option == 0) {
+                                break;
+                            }else{
+                                System.out.println(WRONG_OPTION);
+                            }
+                        }
+
+                    } else {
+                        System.out.println("Wrong number !");
+                    }
+
+            }else{
+                System.out.println(NOT_FOUND);
+            }
+        }else{
+            System.out.println(NOT_FOUND);
+        }
     }
 
     private static void adminPage(User currentUser) {
@@ -99,7 +187,7 @@ class Main implements Constant{
     }
 
     private static void ownerPage(User currentUser) {
-
+        System.out.println("ownersan");
     }
 
     private static void signUp() throws SQLException {
@@ -125,4 +213,6 @@ class Main implements Constant{
         if (i>0) System.out.println("User created successfully");
         else System.err.println("User not created\n");
     }
+
+    private static void buyPruduct (){}
 }
