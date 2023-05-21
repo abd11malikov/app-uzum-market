@@ -81,4 +81,47 @@ public class SubcategoryServiceImp implements SubcategoryService{
         connection.close();
         return subcategories;
     }
+
+    @Override
+    public SubCategory getByName(String name) throws SQLException {
+        var connection = getConnection();
+        String query = "select * from get_subcategory_by_name(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        SubCategory subCategory = null;
+        while (resultSet.next()){
+            subCategory = SubCategory.builder()
+                    .id(resultSet.getInt("s_id"))
+                    .name(resultSet.getString("s_name"))
+                    .categoryId(resultSet.getInt("s_category_id"))
+                    .build();
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return subCategory;
+    }
+
+    @Override
+    public List<SubCategory> getSubcategories(int categoryId) throws SQLException {
+        var connection = getConnection();
+        String query = "select * from get_subcategory(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,categoryId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<SubCategory> subCategories = new ArrayList<>();
+        while (resultSet.next()){
+            SubCategory subCategory = SubCategory.builder()
+                    .id(resultSet.getInt("s_id"))
+                    .name(resultSet.getString("s_name"))
+                    .categoryId(resultSet.getInt("s_category_id"))
+                    .build();
+            subCategories.add(subCategory);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return subCategories;
+    }
 }

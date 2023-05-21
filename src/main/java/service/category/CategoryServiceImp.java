@@ -77,4 +77,24 @@ public class CategoryServiceImp implements CategoryService{
         connection.close();
         return categories;
     }
+
+    @Override
+    public Category getCategoryByName(String name) throws SQLException {
+        var connection = getConnection();
+        String query = "select * from get_category_by_name(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Category category = null;
+        while (resultSet.next()){
+            category = Category.builder()
+                    .id(resultSet.getInt("i_id"))
+                    .name(resultSet.getString("i_name"))
+                    .build();
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return category;
+    }
 }

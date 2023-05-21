@@ -1,5 +1,6 @@
 package service.user;
 
+import dto.HistoryResponse;
 import enums.Gender;
 import enums.Role;
 import model.User;
@@ -87,5 +88,54 @@ public class UserServiceImp implements UserService {
         preparedStatement.close();
         connection.close();
         return users;
+    }
+
+    @Override
+    public User getByPhone(String phone) throws SQLException {
+        var connection = getConnection();
+        String query = "select * from get_by_phone(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,phone);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        User user = null;
+        while (resultSet.next()){
+            user = User.builder()
+                    .id(resultSet.getInt("u_id"))
+                    .name(resultSet.getString("u_name"))
+                    .phoneNumber(resultSet.getString("u_phone_number"))
+                    .role(Role.valueOf(resultSet.getString("u_role")))
+                    .gender(Gender.valueOf(resultSet.getString("u_gender")))
+                    .build();
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return user;
+    }
+
+    @Override
+    public List<HistoryResponse> getHistories(int userId) throws SQLException {
+        var connection = getConnection();
+        String query = "select * from get_history(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<HistoryResponse> historyResponses = new ArrayList<>();
+        while (resultSet.next()){
+            HistoryResponse historyResponse = HistoryResponse.builder()
+                    .userId(resultSet.getInt("i_id"))
+                    .username(resultSet.getString("i_user_name"))
+                    .userPhone(resultSet.getString("i_user_phone"))
+                    .productId(resultSet.getInt("i_product_id"))
+                    .productName(resultSet.getString("i_product_name"))
+                    .paymentId(resultSet.getInt("i_payment_id"))
+                    .createdDate(resultSet.getTimestamp("i_created_date"))
+                    .build();
+            historyResponses.add(historyResponse);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return historyResponses;
     }
 }

@@ -98,4 +98,32 @@ public class ProductServiceImp implements ProductService{
         connection.close();
         return products;
     }
+
+    @Override
+    public List<Product> getSubcategoryProducts(int subcategoryId) throws SQLException {
+        var connection = getConnection();
+        String query = "select * from get_products(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,subcategoryId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Product> products = new ArrayList<>();
+        while (resultSet.next()){
+            Product product = Product.builder()
+                    .id(resultSet.getInt("p_id"))
+                    .name(resultSet.getString("p_name"))
+                    .price(resultSet.getDouble("p_price"))
+                    .subcategoryId(resultSet.getInt("p_subcategory_id"))
+                    .description(resultSet.getString("p_description"))
+                    .color(resultSet.getString("p_color"))
+                    .size(resultSet.getString("p_size"))
+                    .ownerId(resultSet.getInt("p_owner_id"))
+                    .amount(resultSet.getInt("p_amount"))
+                    .build();
+            products.add(product);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return products;
+    }
 }
