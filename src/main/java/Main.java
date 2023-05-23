@@ -97,6 +97,7 @@ class Main implements Constant {
     }
 
     private static void productOwnerService() {
+        System.out.println(PRODUCT_OWNER_PAGE);
         System.out.println("Tabrikleman siz product ownersiz \n\n Afsuski qo'lizdan hich nima kemedi \t\t Hozircha☻");
         while (true){
 
@@ -230,11 +231,11 @@ class Main implements Constant {
     }
 
     private static void adminPage(User currentUser) {
-        System.out.println("adminsan");
+        System.out.println("Sizi badeshka qib owner qib qo'ydik!");
     }
 
     private static void ownerPage(User currentUser) {
-        System.out.println("ownersan");
+        System.out.println("Tabrikleman siz ownersiz !");
     }
 
     private static void signUp() throws SQLException {
@@ -340,90 +341,96 @@ class Main implements Constant {
 
     private static void getByCard(int productId, int currentUserId) throws SQLException {
         int cardId = cardService.checkCard(currentUserId);
-        if (cardId > 0) {
-            Order order = Order.builder()
-                    .userId(currentUserId)
-                    .build();
-            int id = orderService.create(order);
-            if (id > 0) {
-                boolean check2 = productService.orderProducts(id, productId);
-                if (check2) {
-                    Product product = productService.get(productId);
-                    if (product != null) {
+        boolean resultCheck = cardService.cardBalance(cardId, productId);
+        if(resultCheck){
+            if (cardId > 0) {
+                Order order = Order.builder()
+                        .userId(currentUserId)
+                        .build();
+                int orderId = orderService.create(order);
+                if (orderId > 0) {
+                    boolean check2 = productService.orderProducts(orderId, productId);
+                    if (check2) {
+                        Product product = productService.get(productId);
+                        if (product != null) {
 
-                        Payment payment = Payment.builder()
-                                .cardId(cardId)
-                                .price(product.getPrice())
-                                .orderId(id)
-                                .build();
-                        int paymentId = paymentService.create(payment);
-                        if (paymentId > 0) {
-                            boolean check4 = paymentService.addToUserHistory(currentUserId, paymentId, productId);
-                            if (check4) {
-                                int ownerId = product.getOwnerId();
-                                User owner = userService.get(ownerId);
-                                if(owner.getRole().equals(Role.OWNER)){
-                                    int ownerCardId = cardService.getOwnerCard(ownerId);
-                                    int userCardId = cardService.getOwnerCard(currentUserId);
-                                    if(ownerCardId > 0 && userCardId > 0){
-                                        boolean result = cardService.addSum(product.getPrice(), ownerCardId, userCardId);
+                            Payment payment = Payment.builder()
+                                    .cardId(cardId)
+                                    .price(product.getPrice())
+                                    .orderId(orderId)
+                                    .build();
+                            int paymentId = paymentService.create(payment);
+                            if (paymentId > 0) {
+                                boolean check4 = paymentService.addToUserHistory(currentUserId, paymentId, productId);
+                                if (check4) {
+                                    int ownerId = product.getOwnerId();
+                                    User owner = userService.get(ownerId);
+                                    if(owner.getRole().equals(Role.OWNER)){
+                                        int ownerCardId = cardService.getOwnerCard(ownerId);
+                                        int userCardId = cardService.getOwnerCard(currentUserId);
+                                        if(ownerCardId > 0 && userCardId > 0){
+                                            boolean result = cardService.addSum(product.getPrice(), ownerCardId, userCardId);
+                                            if(result){
+                                                System.out.println(SUCCESSFULLY_COMPLETED);
+                                            }else{
+                                                System.out.println("Failed!");
+                                            }
+                                        }else{
+                                            System.out.println("Owner haven't got card!");
+                                        }
+                                    }else if(owner.getRole().equals(Role.PRODUCT_OWNER)){
+                                        int userCardId = cardService.getOwnerCard(currentUserId);
+                                        int productCardId = cardService.getOwnerCard(ownerId);
+                                        boolean result = cardService.calculationOwnerProduct(product.getPrice(), userCardId, productCardId);
                                         if(result){
                                             System.out.println(SUCCESSFULLY_COMPLETED);
-                                        }else{
-                                            System.out.println("Failed!");
+                                        }else {
+                                            System.out.println("Calculation failed !");
                                         }
-                                    }else{
-                                        System.out.println("Owner haven't got card!");
                                     }
-                                }else if(owner.getRole().equals(Role.PRODUCT_OWNER)){
-
-                                    int cardid= cardService.getOwnerCard(ownerId);
-                                    if(cardid > 0){
-                                        Card productOwnerCard = cardService.get(cardid);
-                                        productOwnerCard.setBalance(product.getPrice());
-                                    }else{
-                                        System.out.println("Owner haven't got card!");
-                                    }
+                                } else {
+                                    System.out.println("User history failed! ");
                                 }
                             } else {
-                                System.out.println("User history failed! ");
+                                System.out.println("Payment wasn't created!");
                             }
                         } else {
-                            System.out.println("Payment wasn't created!");
+                            System.out.println("Product not found!");
                         }
                     } else {
-                        System.out.println("Product not found!");
+                        System.out.println("Order product was failed!");
                     }
                 } else {
-                    System.out.println("Order product was failed!");
+                    System.out.println("Order wasn't created!");
                 }
             } else {
-                System.out.println("Order wasn't created!");
-            }
-        } else {
-            System.out.println("Enter your card number : ");
-            String number = scannerStr.nextLine();
-            System.out.println("Enter password");
-            String password = scannerStr.nextLine();
-            while (true) {
-                System.out.println("Comfirm your password : ");
-                String password2 = scannerStr.nextLine();
-                if (password.equals(password2)) {
-                    System.out.println("Enter card type : (HUMO / UZCARD / VISA)");
-                    String cardType = scannerStr.nextLine();
-                    Card card = Card.builder()
-                            .ownerId(currentUserId)
-                            .number(number)
-                            .password(password)
-                            .type(CardType.valueOf(cardType))
-                            .build();
-                    int cardId1 = cardService.create(card);
+                System.out.println("Enter your card number : ");
+                String number = scannerStr.nextLine();
+                System.out.println("Enter password");
+                String password = scannerStr.nextLine();
+                while (true) {
+                    System.out.println("Comfirm your password : ");
+                    String password2 = scannerStr.nextLine();
+                    if (password.equals(password2)) {
+                        System.out.println("Enter card type : (HUMO / UZCARD / VISA)");
+                        String cardType = scannerStr.nextLine();
+                        Card card = Card.builder()
+                                .ownerId(currentUserId)
+                                .number(number)
+                                .password(password)
+                                .type(CardType.valueOf(cardType))
+                                .build();
+                        int cardId1 = cardService.create(card);
 
-                    break;
-                } else {
-                    System.out.println(WRONG_PASSWORD);
+                        break;
+                    } else {
+                        System.out.println(WRONG_PASSWORD);
+                    }
                 }
             }
+        }else{
+            System.out.println("Mablag' yetarli emas!");
         }
+
     }
 }

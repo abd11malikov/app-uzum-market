@@ -43,7 +43,7 @@ public class CardServiceImp implements CardService {
     @Override
     public Card get(int id) throws SQLException {
         var connection = getConnection();
-        String query = "select from card where id = ?";
+        String query = "select * from card where id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -89,6 +89,43 @@ public class CardServiceImp implements CardService {
         preparedStatement.close();
         connection.close();
         return cards;
+    }
+
+    @Override
+    public boolean cardBalance(int cardId, int productId) throws SQLException {
+        var connection = getConnection();
+        String query = "select is_enought_money(?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,cardId);
+        preparedStatement.setInt(2,productId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean result = false;
+        if(resultSet.next()){
+            result = resultSet.getBoolean(1);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return result;
+    }
+
+    @Override
+    public boolean calculationOwnerProduct(double price, int userCardId, int productOwnerCardId) throws SQLException {
+        var connection = getConnection();
+        String query = "select calculation_owner_product(?,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setLong(1, (long) price);
+        preparedStatement.setInt(2,userCardId);
+        preparedStatement.setInt(3,productOwnerCardId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean result = false;
+        if(resultSet.next()){
+            result = resultSet.getBoolean(1);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return result;
     }
 
     @Override
