@@ -12,7 +12,7 @@ public class OrderServiceImp implements OrderService{
     @Override
     public int create(Order order) throws SQLException {
         var connection = getConnection();
-        String query = "selec add_order(?)";
+        String query = "select add_order(?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1,order.getUserId());
         ResultSet resultSet = preparedStatement.executeQuery();

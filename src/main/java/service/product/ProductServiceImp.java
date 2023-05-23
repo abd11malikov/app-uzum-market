@@ -100,6 +100,24 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
+    public boolean orderProducts(int orderId, int productId) throws SQLException {
+        var connection = getConnection();
+        String query = "select add_order_product(?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,orderId);
+        preparedStatement.setInt(2,productId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean result = false;
+        if(resultSet.next()){
+            result = resultSet.getBoolean(1);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return result;
+    }
+
+    @Override
     public boolean checkProduct(int productId, int userId ) throws SQLException {
         var connection = getConnection();
         String query = "select check_product(?,?)";

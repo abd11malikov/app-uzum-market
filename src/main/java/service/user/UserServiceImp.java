@@ -48,7 +48,7 @@ public class UserServiceImp implements UserService {
     @Override
     public User get(int id) throws SQLException {
         var connnection = getConnection();
-        String query = "select * from user where id = ?";
+        String query = "select * from users where id = ?";
         PreparedStatement preparedStatement = connnection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();

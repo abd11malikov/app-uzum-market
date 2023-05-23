@@ -12,17 +12,13 @@ public class PaymentServiceImp implements PaymentService{
     @Override
     public int create(Payment payment) throws SQLException {
         var connection = getConnection();
-        String query = "select add_payment(?,?,?)";
+        String query = "insert into payment(card_id,price,created_date,order_id) values (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1,payment.getCardId());
         preparedStatement.setDouble(2,payment.getPrice());
-        preparedStatement.setInt(3,payment.getOrderId());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        var result = -1;
-        if(resultSet.next()){
-            result = resultSet.getInt(1);
-        }
-        resultSet.close();
+        preparedStatement.setTimestamp(3,payment.getCreatedDate());
+        preparedStatement.setInt(4,payment.getOrderId());
+        int result = preparedStatement.executeUpdate();
         preparedStatement.close();
         connection.close();
         return result;
@@ -85,4 +81,19 @@ public class PaymentServiceImp implements PaymentService{
         connection.close();
         return payments;
     }
+
+    @Override
+    public boolean addToUserHistory(int userId, int paymentId, int productId) throws SQLException {
+         var connection = getConnection();
+        String query = "insert into user_history(user_id,payment_id,product_id) values (?,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,userId);
+        preparedStatement.setInt(2,paymentId);
+        preparedStatement.setInt(3,productId);
+        int result = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        connection.close();
+        return result > 0;
+    }
+
 }

@@ -3,9 +3,9 @@ package enums;
 
 
 public enum CardType {
-    XUMO,
+    HUMO,
     UZCARD,
-    VIZA;
+    VISA;
 
     public CardType cardType (String cardType) {
         for (CardType cardType1 : values()) {
