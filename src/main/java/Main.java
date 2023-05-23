@@ -376,6 +376,7 @@ class Main implements Constant {
                                         System.out.println("Owner haven't got card!");
                                     }
                                 }else if(owner.getRole().equals(Role.PRODUCT_OWNER)){
+
                                     int cardid= cardService.getOwnerCard(ownerId);
                                     if(cardid > 0){
                                         Card productOwnerCard = cardService.get(cardid);
